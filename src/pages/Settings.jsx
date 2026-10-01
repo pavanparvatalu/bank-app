@@ -1,0 +1,18 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import SectionTitle from "../components/SectionTitle";
+
+export default function Settings() {
+  const [tab,setTab]=useState("Edit Profile");
+  const [saved,setSaved]=useState(false);
+  const [twoFactor,setTwoFactor]=useState(true);
+  const [notifications,setNotifications]=useState([true,false,true]);
+  const tabs=["Edit Profile","Preferences","Security"];
+  return <div className="card p-5 sm:p-8">
+    <div className="mb-8 flex gap-8 border-b border-slate-100 text-xs font-medium">{tabs.map(t=><button key={t} onClick={()=>setTab(t)} className={`pb-3 ${tab===t?"border-b-2 border-brand text-brand":"text-slate-400"}`}>{t}</button>)}</div>
+    {tab==="Edit Profile" && <div className="grid gap-8 md:grid-cols-[120px_1fr]"><div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-amber-200 to-slate-300 text-lg font-bold text-white">EC</div><div className="grid gap-5 sm:grid-cols-2">{[["Your Name","Charlene Reed"],["User Name","Charlene Reed"],["Email","charlenereed@gmail.com"],["Password","••••••••••"],["Date of Birth","25 January 1990"],["Present Address","San Jose, California, USA"],["Permanent Address","San Jose, California, USA"],["City","San Jose"],["Postal Code","45962"],["Country","USA"]].map(([l,v])=><label key={l} className="text-xs text-[#26356b]">{l}<input className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs text-slate-400 outline-none focus:border-brand" defaultValue={v}/></label>)}</div></div>}
+    {tab==="Preferences" && <div className="max-w-3xl space-y-7"><div className="grid gap-5 sm:grid-cols-2"><label className="text-xs text-[#26356b]">Currency<select className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs"><option>USD</option><option>INR</option><option>EUR</option></select></label><label className="text-xs text-[#26356b]">Time Zone<select className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs"><option>(GMT-12:00) International Date Line West</option><option>(GMT+05:30) India Standard Time</option></select></label></div><div><SectionTitle>Notification</SectionTitle>{["I send or receive digital currency","I receive merchant order","There are recommendation for my account"].map((x,i)=><div className="mb-4 flex items-center gap-3 text-xs text-slate-500" key={x}><button onClick={()=>setNotifications(n=>n.map((v,j)=>j===i?!v:v))} className={`h-5 w-10 rounded-full p-0.5 ${notifications[i]?"bg-cyan-400":"bg-slate-200"}`}><motion.span layout className={`block h-4 w-4 rounded-full bg-white ${notifications[i]?"ml-5":"ml-0"}`}/></button>{x}</div>)}</div></div>}
+    {tab==="Security" && <div className="max-w-3xl space-y-8"><div className="flex items-center gap-3"><button onClick={()=>setTwoFactor(!twoFactor)} className={`h-6 w-11 rounded-full p-0.5 ${twoFactor?"bg-cyan-400":"bg-slate-200"}`}><motion.span layout className={`block h-5 w-5 rounded-full bg-white ${twoFactor?"ml-5":"ml-0"}`}/></button><span className="text-xs text-slate-500">Enable or disable two factor authentication</span></div><div className="grid gap-5 sm:grid-cols-2"><label className="text-xs">Current Password<input type="password" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3"/></label><label className="text-xs">New Password<input type="password" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3"/></label></div></div>}
+    <div className="mt-8 flex justify-end"><button onClick={()=>{setSaved(true);setTimeout(()=>setSaved(false),1500)}} className="rounded-xl bg-brand px-9 py-3 text-xs font-semibold text-white">{saved?"Saved ✓":"Save"}</button></div>
+  </div>
+}
